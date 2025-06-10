@@ -8,6 +8,8 @@
 Tags das aulas:
 
 - controller
+- view1
+- view2
 
 
 ```
