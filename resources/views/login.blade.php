@@ -5,8 +5,8 @@
 	<title>Sistema</title>
 	
 	<!-- JQUERY -->
-	<script src="{{asset('assets/js/jquery-2.2.4.min.js" type="text/javascript')}}"></script>	
-
+	<script src="{{asset('assets/js/jquery-2.2.4.min.js')}}" type="text/javascript"></script>	
+	
 	<!-- BOOTSTRAP -->
 	<link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
 	<link rel="stylesheet" href="{{asset('assets/css/custom.css')}}">
@@ -39,7 +39,7 @@
 				</div>
 				<!-- FIM [LOGIN OU SENHA INCORRETA] -->
 
-			<form action="" method="post">
+			<form action="{{route('logar')}}" method="post">
 				
 			  	<div class="form-group">
 			    	<label for="campo-email">Email:</label>
