@@ -28,12 +28,14 @@ class LivrosController extends Controller {
             'capa'  => 'required|image'
         ]);
 
-        Livro::create($request->all());
+        $livro = Livro::create($request->all());
 
         //Faz upload de arquivo
         if ($request->has('capa')) {
             $nomeArquivo = 'livro_1.'.$request->capa->extension();
-            $request->capa->storeAs('public/livros/', $nomeArquivo);
+            $request->capa->storeAs('livros', $nomeArquivo, 'public');
+            $livro->capa = $nomeArquivo;
+            $livro->save();
         }
 
         return redirect()->route('livros.listar')->with('sucesso', 'Livro cadastrado com sucesso');
@@ -84,7 +86,7 @@ class LivrosController extends Controller {
         //Faz upload de arquivo
         if ($request->has('capa')) {
             $nomeArquivo = 'livro_1.'.$request->capa->extension();
-            $request->capa->storeAs('public/livros/', $nomeArquivo);
+            $request->capa->storeAs('livros', $nomeArquivo, 'public');
         }
 
         return redirect()->route('livros.listar')->with('sucesso', 'Livro atualizado com sucesso');

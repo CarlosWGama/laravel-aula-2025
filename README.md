@@ -17,7 +17,6 @@ Tags das aulas:
 - model2
 - joins
 - session
-- extras
 
 ```
 git clone https://github.com/CarlosWGama/laravel-aula-2025.git  ./aula
