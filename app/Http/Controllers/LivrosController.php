@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Livro;
 use Illuminate\Http\Request;
 
 class LivrosController extends Controller {
@@ -26,6 +27,8 @@ class LivrosController extends Controller {
             'resumo'=> 'required',
             'capa'  => 'required|image'
         ]);
+
+        Livro::create($request->all());
 
         //Faz upload de arquivo
         if ($request->has('capa')) {
