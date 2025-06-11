@@ -14,6 +14,7 @@
 			      <tr>
 			        <th>ISBN</th>
 			        <th>Título</th>
+			        <th>Categoria</th>
 			        <th>Autor</th>
 			        <th width="10%">Opções</th>
 			      </tr>
@@ -24,6 +25,7 @@
 					<tr>
 						<td>{{$livro['isbn']}}</td>
 						<td>{{$livro['titulo']}}</td>
+						<td>{{$livro['categoria']['categoria']}}</td>
 						<td>{{$livro['autor']}}</td>
 						<td>
 							<a href="{{route('livros.visualizar', ['id' => $livro['id']])}}">Visualizar</a>
