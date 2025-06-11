@@ -22,7 +22,9 @@ Route::controller(LivrosController::class)
         ->group(function() {
             Route::get('/', 'listar')->name('listar');
             Route::get('/novo', 'novo')->name('novo');
-            Route::get('/editar/{id}', 'editar')->name('editar');
+            Route::post('/cadastrar', 'cadastrar')->name('cadastrar');
+            Route::get('/edicao/{id}', 'edicao')->name('edicao');
+            Route::post('/editar/{id}', 'editar')->name('editar');
             Route::get('/visualizar/{id}', 'visualizar')->name('visualizar'); 
             Route::get('/excluir/{id}', 'excluir')->name('excluir');
         });
