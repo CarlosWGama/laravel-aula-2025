@@ -11,7 +11,8 @@ class LivrosController extends Controller {
      * Abre a tela que cadastra um livro 
      */
     public function novo() {
-        return view('livros.cadastro');
+        $dados['livro'] = new Livro;
+        return view('livros.cadastro', $dados);
     }
 
     /** 
@@ -28,13 +29,16 @@ class LivrosController extends Controller {
             'capa'  => 'required|image'
         ]);
 
-        Livro::create($request->all());
+        $livro = Livro::create($request->all());
 
         //Faz upload de arquivo
         if ($request->has('capa')) {
-            $nomeArquivo = 'livro_1.'.$request->capa->extension();
-            $request->capa->storeAs('public/livros/', $nomeArquivo);
+            $nomeArquivo = 'livro_'.$livro->id.'.'.$request->capa->extension();
+            $request->capa->storeAs('livros', $nomeArquivo, 'public');
+            $livro->capa = $nomeArquivo;
+            $livro->save();
         }
+
 
         return redirect()->route('livros.listar')->with('sucesso', 'Livro cadastrado com sucesso');
 
@@ -43,11 +47,16 @@ class LivrosController extends Controller {
     /** 
      * Abre a tela que lista os livros 
      */
-    public function listar() {
-        $dados['livros'] = [
-            ['id' => 1, 'isbn' => '999999999', 'autor' => 'Autor 1', 'titulo' => 'Livro 1'],
-            ['id' => 2, 'isbn' => '888888888', 'autor' => 'Autor 2', 'titulo' => 'Livro 2']
-        ];
+    public function listar(Request $request) {
+
+        //Só para criar a variavel que vamos montar a query sem nada ainda
+        $livroModel = Livro::query();
+        //adiciona a condição caso exista titulo
+        if ($request->has('titulo'))
+            $livroModel = $livroModel->where('titulo', 'like', '%'.$request->titulo.'%');
+        
+        $dados['livros'] = $livroModel->simplePaginate(2)->withQueryString();
+        $dados['titulo'] = $request->titulo;
         return view('livros.listar', $dados);
     }
 
@@ -55,16 +64,7 @@ class LivrosController extends Controller {
      * Abre a tela de edição de livros
      */
     public function edicao(int $id) {
-        $dados = ['livro' => [
-                'id'        => 1,
-                'isbn'      => 23123123123,
-                'categoria' => 3,
-                'titulo'    => 'Titulo 1',
-                'autor'     => 'Autor 1',
-                'resumo'    => 'Bla bla bla bla bla bla'
-            ]
-        ];
-        
+        $dados['livro'] = Livro::find($id);
         return view('livros.edicao', $dados);
     }
 
@@ -81,28 +81,23 @@ class LivrosController extends Controller {
             'capa'  => 'image'
         ]);
 
+        Livro::where('id', $id)->update($request->except('_token'));
+
         //Faz upload de arquivo
         if ($request->has('capa')) {
-            $nomeArquivo = 'livro_1.'.$request->capa->extension();
-            $request->capa->storeAs('public/livros/', $nomeArquivo);
+            $nomeArquivo = 'livro_'.$id.'.'.$request->capa->extension();
+            $request->capa->storeAs('livros', $nomeArquivo, 'public');
+            Livro::where('id', $id)->update(['capa' => $nomeArquivo]);
         }
 
         return redirect()->route('livros.listar')->with('sucesso', 'Livro atualizado com sucesso');
-
     }
 
     /**
      * Abre a tela de visualização de livros
      */
     public function visualizar(int $id) {
-        $dados = ['livro' => [
-                    'id'        => 1,
-                    'titulo'    => 'Titulo 1',
-                    'autor'     => 'Autor 1',
-                    'resumo'    => 'Bla bla bla bla bla bla',
-                    'capa'      => 'https://picsum.photos/200/300'
-                ]
-        ];
+        $dados['livro'] = Livro::find($id);
         return view('livros.visualizar', $dados);
     }
 
@@ -110,8 +105,7 @@ class LivrosController extends Controller {
      * Exclui um livro
      */
     public function excluir(int $id) {
-     
+        Livro::destroy($id);
         return redirect()->route('livros.listar')->with('sucesso', 'Livro excluído com sucesso');
-
     }
 }

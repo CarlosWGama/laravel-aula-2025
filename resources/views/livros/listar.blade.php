@@ -35,4 +35,6 @@
 			    </tbody>
 			    <!-- DADOS [FIM] -->
 			</table>
+
+			{{$livros->links()}}
 @endsection

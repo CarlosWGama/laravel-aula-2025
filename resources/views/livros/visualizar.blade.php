@@ -23,7 +23,7 @@
 				<span class="label label-default">Terror</span>
 			</div>
 			@if(isset($livro['capa']))
-			<img src="{{$livro['capa']}}" />
+			<img src="{{url('storage/livros/' . $livro['capa'])}}" />
 			@endif
 		</div>
 
