@@ -12,7 +12,12 @@ Tags das aulas:
 - view2
 - request
 - validation
-
+- migration
+- model1 
+- model2
+- joins
+- session
+- extras
 
 ```
 git clone https://github.com/CarlosWGama/laravel-aula-2025.git  ./aula
