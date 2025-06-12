@@ -18,24 +18,28 @@ Route::get('/teste', function() {
     echo "[FINALIZADO]";
 });
 
-
 //ROTAS DE AUTENTICAÇÃO
 Route::controller(LoginController::class)->group(function() {
     Route::get('/login', 'login')->name('login');
     Route::post('/logar', 'logar')->name('logar');
-    Route::get('/logout', 'logout');
+    Route::get('/logout', 'logout')->name('logout');
 });
 
-//ROTAS DE LIVROS
-Route::controller(LivrosController::class)
-        ->name('livros.')
-        ->prefix('livros')
-        ->group(function() {
-            Route::get('/', 'listar')->name('listar');
-            Route::get('/novo', 'novo')->name('novo');
-            Route::post('/cadastrar', 'cadastrar')->name('cadastrar');
-            Route::get('/edicao/{id}', 'edicao')->name('edicao');
-            Route::post('/editar/{id}', 'editar')->name('editar');
-            Route::get('/visualizar/{id}', 'visualizar')->name('visualizar'); 
-            Route::get('/excluir/{id}', 'excluir')->name('excluir');
-        });
+
+//APENAS ROTAS AUTENTICADAS
+Route::middleware('auth')->group(function() {
+
+    //ROTAS DE LIVROS
+    Route::controller(LivrosController::class)
+            ->name('livros.')
+            ->prefix('livros')
+            ->group(function() {
+                Route::get('/', 'listar')->name('listar');
+                Route::get('/novo', 'novo')->name('novo');
+                Route::post('/cadastrar', 'cadastrar')->name('cadastrar');
+                Route::get('/edicao/{id}', 'edicao')->name('edicao');
+                Route::post('/editar/{id}', 'editar')->name('editar');
+                Route::get('/visualizar/{id}', 'visualizar')->name('visualizar'); 
+                Route::get('/excluir/{id}', 'excluir')->name('excluir');
+            });    
+});
